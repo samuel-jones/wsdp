@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=PT+Sans|PT+Serif|Roboto" rel="stylesheet">
+		<link href="../codecss/prism.css" rel="stylesheet" />
+		<meta charset="UTF-8">
+		<title>LBTH Key Stats</title>
+		<style type="text/css">
+
+		body { 
+			background-color: white;
+			font-family: 'Roboto Thin', serif;
+		}
+
+		#container {
+			max-width: 1000px;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 5px;
+			padding: 1px 10px 10px 10px;
+			background-color: white;
+			box-shadow: 1px 1px 1px 1px #fff;
+		}
+
+		h1 {
+			font-weight: 300;
+			color: darkslategray;
+			font-family: "Roboto", sans-serif;
+			font-size: 35px;
+			margin-top: 2px;
+			margin-bottom: 0px;
+			}
+
+		h2 {
+			font-weight: 300;
+			color: darkslategray;
+			font-family: "Roboto Medium", sans-serif;
+			font-size: 32px;
+			margin-bottom: 0px;
+			margin-top: 0px;
+			}
+
+		p {
+			font-size: 12px;
+			margin-top: 4px;
+			margin-bottom: 8px;
+			color: #333;
+		}
+
+		a {
+			color: darkslategray;
+		}
+
+		a:hover {
+			color: darkslategray;
+		}
+
+		.footer {
+			font-size: 11px;
+			margin-top: 0px;
+		}
+
+		#outercontroler{
+			float: left;
+			display: table;
+			width: 136px;
+			height: 500px;
+
+		}
+
+		#controler {
+			display: table-cell;
+			vertical-align: middle;
+			background-color: whitesmoke;
+			font-family: "Roboto", sans-serif;
+			border: 1px solid gray;
+			border-radius: 6px;
+			padding: 2px;
+		}
+
+		#svganchor {
+			margin: auto;
+		}
+
+		.criterionList {
+			font-size: 10px;
+			color: #222;
+			text-transform: uppercase;
+			cursor: pointer;
+		}
+
+		.chartTitle {
+			font-family: "Roboto", sans-serif;
+			font-weight: 700;
+			font-size: 18px;
+			color: #444;
+		}
+
+		.chartSubTitle {
+			font-family: "Roboto Thin", sans-serif;
+			font-size: 13px;
+			color: #444;
+		}
+
+
+			.chartSource {
+			font-family: "Roboto Thin", sans-serif;
+			font-size: 8px;
+			color: #444;
+		}
+
+
+		.nodesData {
+			font-family: 'Roboto', serif;
+			font-size: 12px;
+		}
+
+		.nodesDataSpan {
+			font-family: 'Roboto', serif;
+			font-size: 14px;
+			font-weight: 700;
+		}
+
+		.preciseNumberTitle {
+			font-family: "Roboto", sans-serif;
+			font-size: 10px;
+			color: #444;
+		}
+
+		.nodesDataPrecise {
+			font-family: 'Roboto Thin', serif;
+			font-size: 10px;
+			color: #444;
+		}
+
+		svg {
+			background-color: white;
+		}
+
+		</style>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="../codecss/prism.js"></script>
+	</head>
+	<body>	
+		<div id="container">
+			<h2>Tower Hamlets Whole Systems Data Project</h2>	
+			<p>This page describes some key headline statistics covering demographics, health service usage, population health and housing.
+				<br> You can explore some of the data by selecting a variable from the menu on the left.</p>
+
+
+			<br>
+			<div id="outercontroler">
+				<div id="controler">
+					<p><b>Click to select:</b></p>
+				
+				</div>
+			</div>
+			<div id="svganchor"></div>
+
+			<br>
+			
+			<p class="footer">Based on an original example by Gerardo Furtado avaialable  <a href="https://gerardofurtado.com/ohp/ohp.html" target="_blank">here.</a> 
+		</div>
+		<script type="text/javascript">
+
+			var totalData = [{criterion: "Population",
+					description: "We have detailed data on 320,841 residents who lived in Tower Hamlets during 2017/2018.",
+					source: "Source: NHAIS GP Register",
+					groups: [{
+						name: "Male",
+						value: 51.35
+					}, {
+						name: "Female",
+						value: 48.64
+					}]
+
+
+						
+
+						},{
+					criterion: "Age",
+					description: "Tower Hamlets has a very young population. Although increased age is a health risk, there are many younger people who have health needs. ",
+					source: "Source: NHAIS GP Register",
+
+					groups: [{
+						name: "0 to 18",
+						value: 20.77
+					}, {
+						name: "19 to 39",
+						value: 51.55
+					}, {
+						name: "40 to 64",
+						value: 22.22								
+					}, {
+						name: "65 years and over",
+						value: 5.45
+					}]
+
+			 }, 
+			 
+			 {
+					criterion: "Ethnicity",
+					description: "Tower Hamlets has the largest Bangladeshi populations in England. We have captured detailed ethnicity for 80% of our population.",
+					source: "Source: NHAIS GP Register",
+					groups: [{
+						name: "Bangladeshi",
+						value: 29.3968
+
+
+					}, {
+						name: "White - British",
+						value: 20.3721
+
+
+					}, {
+						name: "White - Other",
+						value: 15.3889
+
+
+					},
+					 {
+						name: "Other",
+						value: 18
+
+					},
+					{
+						name: "Unknown",
+						value: 18
+
+					}]
+
+
+
+					
+
+								}, {
+					criterion: "GP Registrations",
+					description: "Although the most residents are registered at GP practices within the Borough, there are a small percentage registered outside Tower Hamlets.",
+					source: "Source: NHAIS GP Register",
+								groups: [{
+						name: "Registerd at GP within Tower Hamlets",
+						value: 96.64
+
+					}, {
+						name: "Registered with GP out of Borough",
+						value: 3.36
+
+					}]
+
+
+
+
+
+
+
+								}, {
+					criterion: "Churn",
+					description: "The time that people are registered with a GP practice can give an indication of movement within the Borough and also on who are long-term residents.",
+					source: "Source: NHAIS GP Register",
+					groups: [{
+						name: "Less than 1 year",
+						value: 3.95
+
+					}, {
+						name: "Between 1 and 3 years",
+						value: 26.91
+
+					}, {
+						name: "Between 3 and 5 years",
+						value: 18.79
+
+					}, {
+						name: "Between 5 and 10 years",
+						value: 27.29
+
+					}, {
+						name: "More than 10 years",
+						value: 23.06
+
+				
+					}]
+
+
+
+
+
+								}, {
+					criterion: "Lifecourse",
+					description: "We have segmented the population across three different lifecourse groups: children and young people, healthy adults and complex adults.",
+					//source: "",
+					groups: [{
+						name: "Born Well Growin Well",
+						value: 21.94
+
+					}, {
+						name: "Living Well",
+						value: 71.80
+
+					}, {
+						name: "Promoting Independence",
+						value: 6.25
+
+							
+					}]
+
+
+
+
+								}, {
+					criterion: "Multimorbidity",
+					description: "Residents who have more multiple long-term health conditions have a high need for health needs and are likely to have a poorer quality of life.",
+					source: "Source of data: Discovery extract July 2018.",
+					
+					groups: [{
+						name: "No long-term conditions",
+						value: 77.87
+					}, {
+						name: "1 long-term condition",
+						value: 14.31
+					}, {
+						name: "2 long-term conditions",
+						value: 4.35
+							
+					}, {
+						name: "3 or more long-term conditions",
+						value: 3.5
+							
+					}]
+
+
+		
+										}, {
+					criterion: "Blood pressure",
+					description: "We have blood pressure recorded on 68% of our population and of these patients:",
+					source: "Source of data: Discovery extract July 2018.",
+					groups: [{
+						name: "Has Low blood pressure",
+						value: 0.9
+					},
+					{
+						name: "Has Normal blood pressure",
+						value: 84.5
+					},{
+						name: "Has Pre-High blood pressure",
+						value: 12.2
+					},{
+						name: "Has High blood pressure",
+						value: 2.4
+					}]
+
+					}, {
+					criterion: "Body Masss Index",
+					description: "We have BMI recorded on 67% of our population and of these patients:",
+					source: "Source of data: Discovery extract July 2018. BMI values then classed according to WHO definitions.",
+					groups: [{
+						name: "Thin",
+						value: 4.6
+					},
+					{
+						name: "Normal weight",
+						value: 45.6
+					},{
+						name: "Overweight",
+						value: 32.2
+					},{
+						name: "Obese Class I",
+						value: 11.4
+					},{
+						name: "Obese Class II",
+						value: 3.9
+					},{
+						name: "Obese Class III",
+						value: 2.2
+					}]
+
+
+					}, {
+					criterion: "GP Usage",
+					description: "We have data on the number of interactions that residents have had with primary care, including the number of appointments.",
+					source: "Source of data: Discovery. Based on GP encounters in 2017/18 financial year.",
+					groups: [{
+						name: "No visits recorded",
+						value: 69.9
+					},
+					{
+						name: "1 visit",
+						value: 8
+					},{
+						name: "2 visits",
+						value: 6
+					},{
+						name: "3 visits",
+						value: 4.1
+					},{
+						name: "4+ visits",
+						value: 12
+					}]
+
+
+					}, {
+					criterion: "Prescriptions",
+					description: "Using primary care data, we know the number of GP prescriptions that our residents have received.",
+					source: "Source of data: Discovery. Based on GP encounters in 2017/18 financial year.",
+					groups: [{
+						name: "No prescriptions or not recorded",
+						value: 93.3
+					},
+					{
+						name: "1 prescriptions",
+						value: 4.0
+					},{
+						name: "2 prescriptions",
+						value: 2.7
+					}]
+
+
+					}, {
+					criterion: "Visits to A&E",
+					description: "We have data on the number of interactions that residents have had with secondary care, including the number of A&E visits within a year.",
+					source: "Source of data: SUS. Based on activity in 2017/18 financial year.",
+					groups: [{
+						name: "No visits recorded",
+						value: 80.4
+					},
+					{
+						name: "1 visit",
+						value: 13.2
+					},{
+						name: "2 visits",
+						value: 3.9
+					},{
+						name: "3 or more visits",
+						value: 2.5
+					}]
+
+					}, {
+					criterion: "Hospital stays",
+					description: "We know the number of interactions that residents have had with secondary care, including the number of inpatients spells that patients have had.",
+					source: "Source of data: SUS. Based on activity in 2017/18 financial year.",
+					groups: [{
+						name: "No spells recorded",
+						value: 89.4
+					},
+					{
+						name: "1 spell",
+						value: 7.55
+					},{
+						name: "2 spells",
+						value: 1.8
+					},{
+						name: "3 or more spells",
+						value: 1.24
+					}]
+
+					}, {
+					criterion: "Outpatient appointments",
+					description: "We know the number of interactions that residents have had with secondary care, including the number of outpatient attendances that patients have had.",
+					source: "Source of data: SUS. Based on activity in 2017/18 financial year.",
+					groups: [{
+						name: "No appointments",
+						value: 70.2
+					},
+					{
+						name: "1 appointments",
+						value: 7.1
+					},{
+						name: "2 appointments",
+						value: 4.97
+					},{
+						name: "3 or more appointments",
+						value: 17.68
+					}]
+
+
+
+						}, 	 {
+					criterion: "Housing tenure",
+					description: "Using linked council datasets we are able to determine the type of housing that residents live.",
+					source: "Source: Tower Hamlets Council",
+					groups: [{
+						name: "Socially rented",
+						value: 43.37
+
+
+					}, {
+						name: "Privately rented",
+						value: 45.11
+
+
+					}, {
+						name: "Other",
+						value: 11.52
+
+
+				
+					}]
+
+
+
+							}, 	 {
+					criterion: "Housing type",
+					description: "Based on certain council datasets, we are also able to determine what physical type of housing people live in for half of our population, and of these:",
+					source: "Source: Tower Hamlets Council",
+					groups: [{
+						name: "Live in a House",
+						value: 14
+
+
+					}, {
+						name: "Live in a Flat",
+						value: 70
+
+
+					}, {
+						name: "Live in a Maisonette",
+						value: 16
+
+
+				
+					}]
+
+
+
+							}, 	 {
+					criterion: "Household composition",
+					description: "Using linked data we are able to segment our population based on household (HH) composition types:",
+					source: "Source: nkm household classification",
+					groups: [{
+						name: "Family HHs with children",
+						value: 35.31
+
+
+					}, {
+						name: "Cohabiting adult HHs no children",
+						value: 29.18
+
+
+					}, {
+						name: "Single adult HHs",
+						value: 9.33
+
+
+				
+					}, {
+						name: "Other HH types",
+						value: 27
+
+
+				
+					}]
+
+
+					}, 	 {
+					criterion: "Linked data",
+					description: "We can create bespoke clustered variables. For example out of 74,00 residents who are current or ex smokers and living in social housing:",
+					//source: "nkm household classification",
+					groups: [{
+						name: "Had flu vaccine in the past year",
+						value: 19.59
+
+
+					}, {
+						name: "Did not have the flu vaccine in the past year",
+						value: 80.41
+
+
+				
+					}]
+
+
+
+
+
+
+
+
+			
+
+				}];
+
+				var headPath = "M251.249,127.907c17.7,0,32.781-6.232,45.254-18.7c12.467-12.467,18.699-27.554,18.699-45.253 c0-17.705-6.232-32.783-18.699-45.255C284.029,6.233,268.948,0,251.249,0c-17.705,0-32.79,6.23-45.254,18.699 c-12.465,12.469-18.699,27.55-18.699,45.255c0,17.703,6.23,32.789,18.699,45.253C218.462,121.671,233.549,127.907,251.249,127.907 z";
+
+				var bodyPath = "M381.438,153.029c-10.663-10.657-23.599-15.987-38.827-15.987H159.889c-15.23,0-28.171,5.327-38.831,15.987 c-10.657,10.66-15.987,23.604-15.987,38.831v118.776c0,7.611,2.663,14.079,7.993,19.407s11.803,7.994,19.414,7.994 c7.614,0,14.087-2.666,19.417-7.994c5.327-5.328,7.994-11.796,7.994-19.407V210.134h18.271v260.379 c0,8.754,3.144,16.275,9.423,22.559c6.28,6.276,13.796,9.418,22.554,9.418s16.278-3.142,22.557-9.418 c6.28-6.283,9.42-13.802,9.42-22.559V338.038h18.27V470.52c0,8.75,3.141,16.275,9.421,22.552 c6.279,6.283,13.802,9.425,22.556,9.425c8.76,0,16.279-3.142,22.559-9.425c6.283-6.283,9.418-13.798,9.418-22.552V210.134h18.274 v100.495c0,7.618,2.665,14.086,7.994,19.411c5.328,5.331,11.799,7.994,19.41,7.994c7.61,0,14.093-2.663,19.417-7.994 c5.328-5.325,7.994-11.793,7.994-19.411V191.86C397.43,176.63,392.095,163.689,381.438,153.029z";
+
+				var criterionListData = totalData.map(d => d.criterion);
+
+				var divList = d3.select("#controler");
+
+				var criterionList = divList.selectAll(".criterionList")
+					.data(criterionListData)
+					.enter()
+					.append("p")
+					.attr("class", "criterionList");
+
+				criterionList.text(d => d);
+
+				var width = 850, height = 500;
+
+				var svg = d3.select("#svganchor")
+					.append("svg")
+					.attr("width", width)
+					.attr("height", height);
+
+				var padding = [10, 10, 10, 10];
+
+				var xScale = d3.scalePoint()
+					.range([padding[3], width - padding[1]])
+					.padding(0.5);
+
+				var barScale = d3.scaleLinear()
+					.range([padding[3], width - padding[1]])
+					.domain([0,100]);
+
+				var colorScale = d3.scaleOrdinal()
+					.range(['#2DA343','#006BB7','#E315C1','#E3881B','#00A5B5']);
+
+				var dataNodes = d3.range(100).map(() => ({id: "", xPosition:""}));
+
+				var simulation = d3.forceSimulation()
+					.force("collide", d3.forceCollide(12))
+					.force("x", d3.forceX(d => d.xPosition).strength(0.2))
+					.force("y", d3.forceY(height / 2))
+					.velocityDecay(0.7);
+
+				var chartTitle = svg.append("text")
+					.attr("class", "chartTitle")
+					.attr("x", width / 2)
+					.attr("y", 20)
+					.attr("text-anchor", "middle");
+
+				var chartSubTitle = svg.append("text")
+					.attr("class", "chartSubTitle")
+					.attr("x", width / 2)
+					.attr("y", 44)
+					.attr("text-anchor", "middle");
+
+				var chartSource = svg.append("text")
+					.attr("class", "chartSource")
+					.attr("x", width / 2)
+					.attr("y", 60)
+					.attr("text-anchor", "middle");
+
+				// var preciseNumberTitle = svg.append("text")
+				// 	.attr("class", "preciseNumberTitle")
+				// 	.attr("y", 424)
+				// 	.attr("x", padding[3])
+				// 	.text("Precise numbers:");
+
+				draw("Population");
+
+				function draw(criterion){
+
+					chartTitle.text(criterion);
+
+					var filteredData = totalData.filter(d => d.criterion === criterion);
+
+					chartSubTitle.text(filteredData[0].description);
+					chartSource.text(filteredData[0].source);
+
+					xScale.domain(filteredData[0].groups.map(d => d.name));
+
+					colorScale.domain(filteredData[0].groups.map(d => d.name));
+
+					var counterData = 0;
+
+					filteredData[0].groups.forEach(d=>{
+						var rounded = Math.round(d.value);
+						for(var i = counterData; i < rounded + counterData; i++){
+							dataNodes[i].id = d.name;
+							dataNodes[i].xPosition = xScale(d.name);
+						};
+						counterData += rounded;
+					});
+
+					var nodes = svg.selectAll(".g")
+						.data(dataNodes)
+						.enter()
+						.append("g");
+
+					nodes.attr("fill", d => colorScale(d.id));
+
+					nodes.append("path")
+						.attr("d", headPath)
+						.attr("transform", "translate(-12,0) scale(0.045,0.045)");
+
+					nodes.append("path")
+						.attr("d", bodyPath)
+						.attr("transform", "translate(-12,0) scale(0.045,0.045)");
+
+					var nodesData = svg.selectAll(".nodesData")
+						.data(filteredData[0].groups, d => d.name)
+						.enter()
+						.append("text")
+						.attr("class", "nodesData")
+						.attr("text-anchor", "middle")
+						.attr("y", 100)
+						.attr("x", d => xScale(d.name))
+						.text(d => d.name + ": ")
+						.append("tspan")
+						.attr("class", "nodesDataSpan")
+						.text(d => Math.round(d.value) + "%");
+
+					var nodesDataPrecise = svg.selectAll(".nodesDataPrecise")
+						.data(filteredData[0].groups, d => d.name)
+						.enter()
+						.append("text")
+						.attr("class", "nodesDataPrecise")
+						.attr("text-anchor", "middle")
+						.attr("y", 440)
+						.attr("x", d => xScale(d.name))
+						.text(d => d.name + ": " + d.value + "%");
+
+					dataNodes.forEach(d =>{
+						d.x = width / 2;
+						d.y = height / 2;
+					});
+
+					simulation.nodes(dataNodes)
+						.on("tick", tick);
+
+					var bars = svg.selectAll(".bars")
+						.data(filteredData[0].groups);
+
+					var barsEnter = bars.enter()
+						.append("rect")
+						.attr("class", "bars")
+						.attr("y", 470)
+						.attr("x", (d,i) => i ? barScale(filteredData[0].groups[i-1].value) : barScale(0))
+						.attr("height", 20)
+						.attr("width", d => barScale(d.value) - padding[3])
+						.attr("fill", d => colorScale(d.name));
+
+					var polylines = svg.selectAll(".polylines")
+						.data(filteredData[0].groups)
+						.enter()
+						.append("polyline")
+						.attr("class", "polylines")
+						.attr("points", d => "" + xScale(d.name) + ",470 "
+						+ xScale(d.name) + ",446")
+						.attr("stroke-width", 1)
+						.attr("stroke", "darkslategray");
+
+					function tick(){
+						nodes.attr('transform', (d) => {
+							if (d.y < 120) {
+								d.y = 120
+							};
+							if (d.y > 380) {
+								d.y = 380
+							};
+							return 'translate(' + (d.x) + ',' + (d.y) + ')';
+						});
+					};
+
+					function redraw(criterion){
+
+						chartTitle.text(criterion);
+
+						var filteredData = totalData.filter(d => d.criterion === criterion);
+
+						chartSubTitle.text(filteredData[0].description);
+						chartSource.text(filteredData[0].source);
+
+
+						xScale.domain(filteredData[0].groups.map(d => d.name));
+
+						colorScale.domain(filteredData[0].groups.map(d => d.name));
+
+						var counterData = 0;
+
+						filteredData[0].groups.forEach(d=>{
+							var rounded = Math.round(d.value);
+							for(var i = counterData; i < rounded + counterData; i++){
+								dataNodes[i].id = d.name;
+								dataNodes[i].xPosition = xScale(d.name);
+							};
+							counterData += rounded;
+						});
+
+						nodes.transition()
+							.duration(500)
+							.attr("fill", d => colorScale(d.id));
+
+						var newNodesData = svg.selectAll(".nodesData")
+							.data(filteredData[0].groups, d => d.name + d.value);
+
+						var newNodesDataExit = newNodesData.exit()
+							.remove();
+
+						var newNodesDataEnter = newNodesData.enter()
+							.append("text")
+							.attr("class", "nodesData")
+							.attr("text-anchor", "middle")
+							.attr("y", 100)
+							.attr("x", d => xScale(d.name))
+							.text(d => d.name + ": ")
+							.append("tspan")
+							.attr("class", "nodesDataSpan")
+							.text(d => Math.round(d.value) + "%");
+
+						var newNodesDataPrecise = svg.selectAll(".nodesDataPrecise")
+							.data(filteredData[0].groups, d => d.name + d.value);
+
+						newNodesDataPrecise.exit()
+							.transition()
+							.delay(750)
+							.duration(10)
+							.remove();
+
+						// newNodesDataPrecise.enter()
+						// 	.append("text")
+						// 	.attr("class", "nodesDataPrecise")
+						// 	.attr("text-anchor", "middle")
+						// 	.attr("y", 440)
+						// 	.attr("x", d => xScale(d.name))
+						// 	.transition()
+						// 	.delay(750)
+						// 	.duration(10)
+						// 	.text(d => d.name + ": " + d.value + "%");
+
+						var bars = svg.selectAll(".bars")
+							.data(filteredData[0].groups);
+
+						var barExit = bars.exit()
+							.transition()
+							.delay(750)
+							.duration(500)
+							.attr("x", width - padding[1])
+							.attr("width", 0)
+							.remove();
+
+						var barsEnter = bars.enter()
+							.append("rect")
+							.attr("class", "bars")
+							.attr("x", width - padding[1])
+							.merge(bars)
+							.attr("y", 470)
+							.attr("height", 20);
+
+						barsEnter.transition()
+							.delay(750)
+							.duration(500)
+							.attr("x", (d,i) =>{
+								if(i === 0){
+									return barScale(0);
+								} else {
+									var counter = 0;
+									for(var j = 0; j < i; j++){
+										counter += filteredData[0].groups[j].value;
+									};
+									return barScale(counter);
+								}
+							})
+							.attr("width", d => barScale(d.value) - padding[3])
+							.attr("fill", d => colorScale(d.name));
+
+						var polylines = svg.selectAll(".polylines")
+							.data(filteredData[0].groups);
+
+						var polylinesExit = polylines.exit()
+							.transition()
+							.delay(750)
+							.duration(500)
+							.attr("points", "" + width + ",470 "
+								+ width + ",458 " + width + ",458 "
+								+ width + ",446")
+							.remove();
+
+						var polylinesEnter = polylines.enter()
+							.append("polyline")
+							.attr("class", "polylines")
+							.attr("points", "" + width + ",470 "
+								+ width + ",458 " + width + ",458 "
+								+ width + ",446")
+							.merge(polylines)
+							.transition()
+							.delay(750)
+							.duration(500)
+							.attr("points", (d,i) =>{
+								if(i === 0){
+									return "" + (barScale(0) + (barScale(filteredData[0].groups[0].value))/2) + ",470 " + (barScale(0) + (barScale(filteredData[0].groups[0].value))/2) + ",458 "
+										+ xScale(d.name) + ",458 " + xScale(d.name) + ",446";
+								} else {
+									var counter = 0;
+									for(var j = 0; j < i; j++){
+										counter += filteredData[0].groups[j].value;
+									};
+									var thisWidth = barScale(counter);
+									return "" + (thisWidth + (barScale(d.value) - padding[3])/2) + ",470 " + (thisWidth + (barScale(d.value) - padding[3])/2) + ",458 " + xScale(d.name) + ",458 " + xScale(d.name) + ",446";
+								}
+							})
+							.attr("stroke-width", 1)
+							.attr("fill", "none")
+							.attr("stroke", "none");
+
+						setTimeout(function(){
+							simulation.nodes(dataNodes);
+							simulation.alpha(0.8).restart();
+						}, 750)
+
+						//end of redraw
+					};
+
+					d3.selectAll(".criterionList").on("click", function(d){
+						redraw(d);
+					});
+
+					//end of draw
+				};
+
+
+
+		</script>
+	</body>
+</html>
